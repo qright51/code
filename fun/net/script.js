@@ -21,6 +21,19 @@ canvas.addEventListener("mousemove",(e)=>{
     }
 })
 
+
+canvas.addEventListener("touchmove",(e)=>{
+    clear()
+    let m = [e.touches[0].clientX, e.touches[0].clientY];
+    for(let a of nodes){
+        let r = range(m,a);
+        if(r<=mouseRange){
+            line(m,a,r)
+        }
+        circle(a[0],a[1],r);
+    }
+})
+
 window.onload=()=>{
     init();
 }
