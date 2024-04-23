@@ -1,49 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Directory Listing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code</title>
+    <style>
+        h1, h2, h3, h4, h5, p, a{
+            font-family: sans-serif;
+        }
+    </style>
 </head>
 <body>
-<h1>Directory Listing</h1>
-<ul id="directoryList"></ul>
-
-<script>
-    // Function to fetch directory contents and update the page
-    function fetchDirectoryContents() {
-        // Fetch the directory contents
-        fetch('./')
-            .then(response => response.text())
-            .then(data => {
-                // Parse the HTML response
-                let parser = new DOMParser();
-                let htmlDoc = parser.parseFromString(data, 'text/html');
-
-                // Get the links to directories
-                let links = htmlDoc.querySelectorAll('a[href^="./"]');
-                let directoryList = document.getElementById('directoryList');
-
-                // Clear existing list items
-                directoryList.innerHTML = '';
-
-                // Create list items for each directory and add them to the page
-                links.forEach(link => {
-                    if (link.href.endsWith('/')) {
-                        let listItem = document.createElement('li');
-                        let linkElement = document.createElement('a');
-                        linkElement.textContent = link.textContent;
-                        linkElement.setAttribute('href', link.href);
-                        listItem.appendChild(linkElement);
-                        directoryList.appendChild(listItem);
-                    }
-                });
-            })
-            .catch(error => console.error('Error fetching directory contents:', error));
-    }
-
-    // Call the function when the page loads
-    window.addEventListener('load', fetchDirectoryContents);
-</script>
+    <h1>Code</h1>
+    <br>
+    <h3>Welcome to code section of my website</h3>
+    <h4>(provided by GitHub)</h4>
+    <br>
+    <h4>Tools</h4>
+    <ul>
+        <li><a href="tools/qrcode/index.html">QR Code generator</a></li>
+        <li><a href="tools/barcode/index.html">Barcode 128 generator</a></li>
+    </ul>
+    <br>
+    <h4>Fun</h4>
+    <ul>
+        <li><a href="fun/clock/index.html">Clock</a></li>
+    </ul>
+    <p style="bottom: 0; position: absolute;">&copy; 2024 - <a href="https://qright.dev">qright</a></p>
 </body>
 </html>

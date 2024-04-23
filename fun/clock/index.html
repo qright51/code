@@ -83,6 +83,7 @@
 	<style>
 		body{
 		    background-color:#fff;
+		    overflow: hidden;
 		}
 
 		canvas{
@@ -191,6 +192,12 @@
 
 		const timeZone=["UTC-12 'Baker Island'","UTC-11 'US Samoa'","UTC-10 'Hawaii'","UTC-9 'Fairbanks'","UTC-8 'Los Angeles'","UTC-7 'Denver'","UTC-6 'Dallas'","UTC-5 'New York'","UTC-4 'Halifax'","UTC-3 'Rio de Janeiro'","UTC-2 'King Edward Point'","UTC-1 'Praia'","UTC-0 'London'","UTC+1 'Zagreb'","UTC+2 'Cairo'","UTC+3 'Moscow'","UTC+4 'Samara'","UTC+5 'Oral'","UTC+6 'Omsk'","UTC+7 'Novosibirsk'","UTC+8 'Hong Kong'","UTC+9 'Tokyo'","UTC+10 'Brisbane'","UTC+11 'Sydney'","UTC+12 'Anadyr'","UTC+13 'Wellington'","UTC+14 'Line Islands'"];
 		currentTimezone = timeZone[currentTimezone];
+
+
+		window.onresize=()=>{
+			location.reload();
+		}
+
 
 		accurateTime();
 
