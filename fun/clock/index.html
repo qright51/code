@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Analog clock</title>
+	<link rel="icon" href="https://i.ibb.co/9m0XpJ7/357977-200.png">
+    <div>
+		<canvas id="board" style="z-index:1"></canvas>
+		<select id="menu" class="design" style="z-index:2; position:absolute; top:x; left:y; font-family: Consolas;">
+			<option class="design-option" value="menuValue">Menu</option>
+			<option class="design-option" value="colorChange">Change color</option>
+			<option class="design-option" value="zoneChange">Change current timezone</option>
+			<option class="design-option" value="layoutChange">Change layout</option>
+		</select>
+		<br><br><br>
+		<select id="ColorChange" class="design" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden; font-family: Consolas;">
+			<option class="design-option" value="menu2">Menu</option>
+			<option class="design-option" value="selectColor">Select color template</option>
+			<option class="design-option" value="colorEnter">Choose custom color</option>
+		</select>
+		<select id="timezoneChange" class="design" onchange="updateTimezone()" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden; font-family: Consolas;">
+			<option class="design-option" value="utc-12">UTC-12</option>
+			<option class="design-option" value="utc-11">UTC-11</option>
+			<option class="design-option" value="utc-10">UTC-10</option>
+			<option class="design-option" value="utc-9">UTC-9</option>
+			<option class="design-option" value="utc-8">UTC-8</option>
+			<option class="design-option" value="utc-7">UTC-7</option>
+			<option class="design-option" value="utc-6">UTC-6</option>
+			<option class="design-option" value="utc-5">UTC-5</option>
+			<option class="design-option" value="utc-4">UTC-4</option>
+			<option class="design-option" value="utc-3">UTC-3</option>
+			<option class="design-option" value="utc-2">UTC-2</option>
+			<option class="design-option" value="utc-1">UTC-1</option>
+			<option class="design-option" value="utc+0">UTC+0</option>
+			<option class="design-option" value="utc+1">UTC+1</option>
+			<option class="design-option" value="utc+2">UTC+2</option>
+			<option class="design-option" value="utc+3">UTC+3</option>
+			<option class="design-option" value="utc+4">UTC+4</option>
+			<option class="design-option" value="utc+5">UTC+5</option>
+			<option class="design-option" value="utc+6">UTC+6</option>
+			<option class="design-option" value="utc+7">UTC+7</option>
+			<option class="design-option" value="utc+8">UTC+8</option>
+			<option class="design-option" value="utc+9">UTC+9</option>
+			<option class="design-option" value="utc+10">UTC+10</option>
+			<option class="design-option" value="utc+11">UTC+11</option>
+			<option class="design-option" value="utc+12">UTC+12</option>
+			<option class="design-option" value="utc+13">UTC+13</option>
+			<option class="design-option" value="utc+14">UTC+14</option>
+		</select>
+		<select id="layoutChosen" class="design" onchange="layoutChoose()" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden; font-family: Consolas;">
+			<option class="design-option" value="oneClock">One clock</option>
+			<option class="design-option" value="threeClocks">Three clocks</option>
+			<option class="design-option" value="fiveClocks">Five clocks</option>
+			<option class="design-option" value="onlyDigital">Only digital</option>
+			<option class="design-option" value="onlyAnalog">Only analog</option>
+		</select>
+		<br><br><br>
+		<select id="selectColor" class="design" onchange="changeColors()" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden; font-family: Consolas;">
+			<option class="design-option" value="black" style="color:white">Black</option>
+			<option class="design-option" value="white" style="color:white">White</option>
+			<option class="design-option" value="red" style="color:red">Red</option>
+			<option class="design-option" value="orange" style="color:orange">Orange</option>
+			<option class="design-option" value="yellow" style="color:yellow">Yellow</option>
+			<option class="design-option" value="lime" style="color:lime">Lime</option>
+			<option class="design-option" value="green" style="color:green">Green</option>
+			<option class="design-option" value="turquoise" style="color:turquoise">Turquoise</option>
+			<option class="design-option" value="lightblue" style="color:rgb(0, 183, 255)">Lightblue</option>
+			<option class="design-option" value="blue" style="color:blue">Blue</option>
+			<option class="design-option" value="purple" style="color:rgb(140, 0, 255)">Purple</option>
+			<option class="design-option" value="pink" style="color:rgb(255, 0, 255)">Pink</option>
+		</select>
+		<p id="txtColorEnter" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden; color: white; font-family: Consolas;">Choose background color: </p>
+		<br><br>
+		<input id="colorEnter" class="design-color" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden;" type="color" onInput="customColor()">
+		<br><br>
+		<p id="txtClockEnter" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden; color: white; font-family: Consolas;">Choose clock color: </p>
+		<br><br>
+		<input id="clockEnter" class="design-color" style="z-index:2; position:absolute; top:x; left:y; visibility: hidden;" type="color" onInput="customColor()">
+	</div>
+</head>
+<body>
+	<style>
+		body{
+		    background-color:#fff;
+		}
+
+		canvas{
+		    position: absolute;
+		    top: 0px;
+		    left: 0px;
+		}
+
+		.design{
+			border: 2px solid #fff;
+			background-color:transparent;
+			color: white;
+			padding-top: 10px;
+			padding-bottom: 10px;
+			padding: 10px 10px;
+			text-align: center;
+			font-weight:bold;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 13px;
+			cursor: crosshair;
+		}
+
+		.design-color{
+			border: 2px solid #fff;
+			padding: 0px;
+			background-color:transparent;
+			cursor: crosshair;
+		}
+
+		.design-option{
+			color: white;
+			background-color: black;
+		}
+	</style>
+    <script>
+    	let canvas = document.getElementById("board");
+		let ctx = canvas.getContext("2d");
+		let menu = document.getElementById("menu");
+		let ColorChange = document.getElementById("ColorChange");
+		let selectColor = document.getElementById("selectColor");
+		let colorEnter = document.getElementById("colorEnter");
+		let clockEnter = document.getElementById("clockEnter");
+		let txtColorEnter = document.getElementById("txtColorEnter");
+		let txtClockEnter = document.getElementById("txtClockEnter");
+		let design = document.getElementsByClassName("design");
+		let designColor = document.getElementsByClassName("design-color");
+		let timezoneChange = document.getElementById("timezoneChange");
+		let layoutChosen = document.getElementById("layoutChosen");
+		let designOption = document.getElementsByClassName("design-option");
+
+		console.log("~==========================~");
+		console.log("~=(REAL-TIME ANALOG CLOCK)=~");
+		console.log("~=====(ANTONIO ŠANTAK)=====~");
+		console.log("~==========================~");
+
+		canvas.width=window.innerWidth;
+		canvas.height=window.innerHeight;
+
+		const width=canvas.width;
+		const height=canvas.height;
+		const radius=150;
+		let onMenu=false;
+
+		let background="#000";
+		let clockColor="#fff";
+
+		let moveCounter=0;
+		let clockStyle=0;
+
+		let angleSec = 0;
+		let secA=0;
+		let secB=0;
+
+		let angleMin = 0;
+		let minA=0;
+		let minB=0;
+
+		let angleHour = 0;
+		let hourA=0;
+		let hourB=0;
+
+		let zeroAdderH=0;
+		let zeroAdderM=0;
+		let zeroAdderS=0;
+
+		let timeOfDay="A";
+
+		ctx.fillStyle="#000";
+		ctx.fillRect(0,0,width,height);
+
+		let date = new Date();
+		let hours = date.getHours();
+		let minutes = date.getMinutes();
+		let seconds = date.getSeconds();
+		let currentTimezone = date.getTimezoneOffset();
+		let previousTimezoneNumber=currentTimezone;
+		let currentTimezoneNumber=currentTimezone;
+		const secondUpdated = date.getSeconds();
+
+		currentTimezone=-currentTimezone/60;
+		currentTimezone+=12;
+		let previousTimezone=currentTimezone;
+		let timezoneChanged=false;
+		let timezoneDifferenceNumber=0;
+
+		const timeZone=["UTC-12 'Baker Island'","UTC-11 'US Samoa'","UTC-10 'Hawaii'","UTC-9 'Fairbanks'","UTC-8 'Los Angeles'","UTC-7 'Denver'","UTC-6 'Dallas'","UTC-5 'New York'","UTC-4 'Halifax'","UTC-3 'Rio de Janeiro'","UTC-2 'King Edward Point'","UTC-1 'Praia'","UTC-0 'London'","UTC+1 'Zagreb'","UTC+2 'Cairo'","UTC+3 'Moscow'","UTC+4 'Samara'","UTC+5 'Oral'","UTC+6 'Omsk'","UTC+7 'Novosibirsk'","UTC+8 'Hong Kong'","UTC+9 'Tokyo'","UTC+10 'Brisbane'","UTC+11 'Sydney'","UTC+12 'Anadyr'","UTC+13 'Wellington'","UTC+14 'Line Islands'"];
+		currentTimezone = timeZone[currentTimezone];
+
+		accurateTime();
+
+		function accurateTime(){
+			date = new Date();
+			if(date.getSeconds() > secondUpdated || (date.getSeconds()==0 && secondUpdated==59)) updateTime();
+			else setTimeout(accurateTime,1);
+		}
+
+		menu.addEventListener("click",function(){
+			switch(menu.value){
+				case "menuValue":{if(menu.selected=="false") {break;} timezoneChange.style.visibility="hidden";ColorChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="hidden";break;}
+				case "colorChange": {if(menu.selected=="false") {break;} ColorChange.style.visibility="visible";timezoneChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="hidden";break;}
+				case "zoneChange": {if(menu.selected=="false") {break;} timezoneChange.style.visibility="visible"; ColorChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="hidden";break;}
+				case "layoutChange": {if(menu.selected=="false") {break;} timezoneChange.style.visibility="hidden";ColorChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="visible";break;}
+				default:{if(menu.selected=="false") {break;} timezoneChange.style.visibility="hidden";ColorChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="hidden";}
+			}
+		})
+
+		ColorChange.addEventListener("click",function(){
+			switch(ColorChange.value){
+				case "menu2":{if(ColorChange.selected=="false") {break;} timezoneChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="hidden";break;}
+				case "selectColor": {if(ColorChange.selected=="false") {break;} timezoneChange.style.visibility="hidden";selectColor.style.visibility="visible";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="hidden";break;}
+				case "colorEnter": {if(ColorChange.selected=="false") {break;} timezoneChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="visible";clockEnter.style.visibility="visible";txtColorEnter.style.visibility="visible";txtClockEnter.style.visibility="visible";layoutChosen.style.visibility="hidden";break;}
+				default:{if(ColorChange.selected=="false") {break;} timezoneChange.style.visibility="hidden";selectColor.style.visibility="hidden";colorEnter.style.visibility="hidden";clockEnter.style.visibility="hidden";txtColorEnter.style.visibility="hidden";txtClockEnter.style.visibility="hidden";layoutChosen.style.visibility="hidden";}
+			}
+		})
+
+		function updateTimezone(){
+			switch(timezoneChange.value){
+				case "utc-12": {currentTimezone = timeZone[0];currentTimezoneNumber=720;break;}
+				case "utc-11": {currentTimezone = timeZone[1];currentTimezoneNumber=660;break;}
+				case "utc-10": {currentTimezone = timeZone[2];currentTimezoneNumber=600;break;}
+				case "utc-9": {currentTimezone = timeZone[3];currentTimezoneNumber=540;break;}
+				case "utc-8": {currentTimezone = timeZone[4];currentTimezoneNumber=480;break;}
+				case "utc-7": {currentTimezone = timeZone[5];currentTimezoneNumber=420;break;}
+				case "utc-6": {currentTimezone = timeZone[6];currentTimezoneNumber=360;break;}
+				case "utc-5": {currentTimezone = timeZone[7];currentTimezoneNumber=300;break;}
+				case "utc-4": {currentTimezone = timeZone[8];currentTimezoneNumber=240;break;}
+				case "utc-3": {currentTimezone = timeZone[9];currentTimezoneNumber=180;break;}
+				case "utc-2": {currentTimezone = timeZone[10];currentTimezoneNumber=120;break;}
+				case "utc-1": {currentTimezone = timeZone[11];currentTimezoneNumber=60;break;}
+				case "utc+0": {currentTimezone = timeZone[12];currentTimezoneNumber=0;break;}
+				case "utc+1": {currentTimezone = timeZone[13];currentTimezoneNumber=-60;break;}
+				case "utc+2": {currentTimezone = timeZone[14];currentTimezoneNumber=-120;break;}
+				case "utc+3": {currentTimezone = timeZone[15];currentTimezoneNumber=-180;break;}
+				case "utc+4": {currentTimezone = timeZone[16];currentTimezoneNumber=-240;break;}
+				case "utc+5": {currentTimezone = timeZone[17];currentTimezoneNumber=-300;break;}
+				case "utc+6": {currentTimezone = timeZone[18];currentTimezoneNumber=-360;break;}
+				case "utc+7": {currentTimezone = timeZone[19];currentTimezoneNumber=-420;break;}
+				case "utc+8": {currentTimezone = timeZone[20];currentTimezoneNumber=-480;break;}
+				case "utc+9": {currentTimezone = timeZone[21];currentTimezoneNumber=-540;break;}
+				case "utc+10": {currentTimezone = timeZone[22];currentTimezoneNumber=-600;break;}
+				case "utc+11": {currentTimezone = timeZone[23];currentTimezoneNumber=-660;break;}
+				case "utc+12": {currentTimezone = timeZone[24];currentTimezoneNumber=-720;break;}
+				case "utc+13": {currentTimezone = timeZone[25];currentTimezoneNumber=-780;break;}
+				case "utc+14": {currentTimezone = timeZone[26];currentTimezoneNumber=-840;break;}
+				default: {currentTimezone = timeZone[currentTimezone];timezoneChanged=true;}
+			}
+			if(previousTimezone!=currentTimezone) {
+				timezoneChanged=true;
+				timezoneDifferenceNumber=previousTimezoneNumber-currentTimezoneNumber;
+			}
+			timezoneDifferenceNumber/=-60;
+			oneTimeUpdate();
+		}
+		function layoutChoose(){
+			switch(layoutChosen.value){
+				case "oneClock":{clockStyle=0;break;}
+				case "threeClocks":{clockStyle=1;break;}
+				case "fiveClocks":{clockStyle=2;break;}
+				case "onlyDigital":{clockStyle=3;break;}
+				case "onlyAnalog":{clockStyle=4;break;}
+				default:{clockStyle=0;}
+			}
+		}
+
+		function invertColor(hexTripletColor) {
+			var color = hexTripletColor;
+			color = color.substring(1); // remove #
+			color = parseInt(color, 16); // convert to integer
+			color = 0xFFFFFF ^ color; // invert three bytes
+			color = color.toString(16); // convert to hex
+			color = ("000000" + color).slice(-6); // pad with leading zeros
+			color = "#" + color; // prepend #
+			return color;
+		}
+
+		function customColor(){
+			background=colorEnter.value;
+			clockColor=clockEnter.value;
+			for(let i=0; i<design.length;i++){
+				design[i].style.border="2px solid "+clockColor;
+				design[i].style.color=invertColor(background);
+			}
+			for(let i=0; i<designColor.length;i++){
+				designColor[i].style.border="2px solid "+clockColor;
+			}
+			for(let i=0; i<designOption.length;i++){
+				designOption[i].style.color=invertColor(background);
+				designOption[i].style.backgroundColor=background;
+			}
+			txtColorEnter.style.color=invertColor(background);
+			txtClockEnter.style.color=invertColor(background);
+			oneTimeUpdate();
+		}
+
+		function changeColors(){
+			switch(selectColor.value){
+				case "black":{background="#000000";clockColor="#ffffff";break;}
+				case "white":{background="#ffffff";clockColor="#000000";break;}
+				case "red":{background="#ff0000";clockColor="#000000";break;}
+				case "orange":{background="#ffa500";clockColor="#000000";break;}
+				case "yellow":{background="#ffff00";clockColor="#000000";break;}
+				case "lime":{background="#00ff00";clockColor="#000000";break;}
+				case "green":{background="#00b00a";clockColor="#ffffff";break;}
+				case "turquoise":{background="#40e0d0";clockColor="#000000";break;}
+				case "lightblue":{background="#add8e6";clockColor="#000000";break;}
+				case "blue":{background="#0000ff";clockColor="#ffffff";break;}
+				case "purple":{background="#800080";clockColor="#ffffff";break;}
+				case "pink":{background="#ff1493";clockColor="#000000";break;}
+			}
+			for(let i=0; i<design.length;i++){
+				design[i].style.border="2px solid "+clockColor;
+				design[i].style.color=invertColor(background);
+			}
+			for(let i=0; i<designColor.length;i++){
+				designColor[i].style.border="2px solid "+clockColor;
+			}
+			for(let i=0; i<designOption.length;i++){
+				designOption[i].style.color=invertColor(background);
+				designOption[i].style.backgroundColor=background;
+			}
+			txtColorEnter.style.color=invertColor(background);
+			txtClockEnter.style.color=invertColor(background);
+			oneTimeUpdate();
+		}
+
+		function onlyDigital(){
+			ctx.fillStyle=background;
+		    ctx.fillRect(0,0,width,height);
+
+		    date = new Date();
+		    hours = date.getHours();
+		    minutes = date.getMinutes();
+			seconds = date.getSeconds();
+			hours-=timezoneDifferenceNumber;
+
+			if(hours>23) hours-=24;
+		    if(hours>11) {timeOfDay="P"}
+		    else {timeOfDay="A"}
+
+		    if(hours>12) {hours=hours-12;}
+
+			ctx.font = "30px Consolas";
+		    ctx.fillStyle=clockColor;
+		    ctx.textAlign = "center";
+
+		    if(hours<10) zeroAdderH=0;
+		    else zeroAdderH="";
+
+		    if(minutes<10) zeroAdderM=0;
+		    else zeroAdderM="";
+
+		    if(seconds<10) zeroAdderS=0;
+		    else zeroAdderS="";
+
+		    ctx.fillText(`${zeroAdderH}${hours}:${zeroAdderM}${minutes}:${zeroAdderS}${seconds} ${timeOfDay}M`, (width/2), height/2);
+			ctx.font = "25px Consolas";
+			ctx.fillText(currentTimezone, (width/2), height/2+radius/3);
+		}
+
+		function drawClock(id,xaxis,yradius,analog=true){
+			if(id==1) {ctx.fillStyle=background;
+		    ctx.fillRect(0,0,width,height);}
+
+			ctx.fillStyle=clockColor;
+		    ctx.beginPath();
+		    ctx.arc(xaxis,height/2,yradius,0,2*Math.PI);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) y -> radius (1), radius/1.25 (3), radius/1.7 (5) 
+		    ctx.fill();
+		    ctx.beginPath();
+		    ctx.fillStyle=background;
+		    ctx.arc(xaxis,height/2,yradius-4,0,2*Math.PI); //x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) y -> radius (1), radius/1.25 (3), radius/1.7 (5) 
+		    ctx.fill();
+
+			ctx.fillStyle=clockColor;
+			ctx.fillRect(xaxis-3/2,height/2-3/2,3,3);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) 
+
+		    date = new Date();
+		    hours = date.getHours();
+		    minutes = date.getMinutes();
+			seconds = date.getSeconds();
+			
+			if(hours>0 && hours<1) hours=12;
+			hours=parseFloat(hours);
+
+			if(id==-3){hours=hours-1;}
+			else if(id==3){hours=hours+1;}
+			else if(id==-5){hours=hours-2;}
+			else if(id==5){hours=hours+2;}
+			
+			hours-=timezoneDifferenceNumber;
+			if(hours>23) hours-=24;
+			if(hours<0) hours=24+hours;
+		    if(hours>11) {timeOfDay="P"}
+		    else {timeOfDay="A"}
+
+		    if(hours>12) {hours=hours-12;}
+
+			ctx.font = "30px Consolas";//(5) "25px Consolas"
+			if(id==-5 || id==5) {ctx.font = "25px Consolas";}
+		    ctx.fillStyle=clockColor;
+		    ctx.textAlign = "center";
+
+		    if(hours<10) zeroAdderH=0;
+		    else zeroAdderH="";
+
+		    if(minutes<10) zeroAdderM=0;
+		    else zeroAdderM="";
+
+		    if(seconds<10) zeroAdderS=0;
+		    else zeroAdderS="";
+
+			//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5), y -> radius/0.8 (1), radius (3),  radius*0.8 (5) 
+			if(id==1 && analog==true) ctx.fillText(`${zeroAdderH}${hours}:${zeroAdderM}${minutes}:${zeroAdderS}${seconds} ${timeOfDay}M`, (xaxis), height/2-radius/0.8);
+			else if((id==3 || id==-3) && analog==true) ctx.fillText(`${zeroAdderH}${hours}:${zeroAdderM}${minutes}:${zeroAdderS}${seconds} ${timeOfDay}M`, (xaxis), height/2-radius);
+			else if((id==5 || id==-5) && analog==true) ctx.fillText(`${zeroAdderH}${hours}:${zeroAdderM}${minutes}:${zeroAdderS}${seconds} ${timeOfDay}M`, (xaxis), height/2-radius*0.8);
+
+			if(id==1) ctx.font="20px Consolas";
+			else if(id==3 || id==-3) ctx.font="16px Consolas";
+			else if(id==5 || id==-5) ctx.font="13px Consolas";
+			ctx.fillText("12", (xaxis), height/2-yradius/1.2);
+			ctx.fillText("3", (xaxis+yradius/1.1), height/2+5);
+			ctx.fillText("6", (xaxis), height/2+yradius/1.1);
+			ctx.fillText("9", (xaxis-yradius/1.1), height/2+5);
+			ctx.fillText("1", (xaxis+yradius/2.3), height/2-yradius/1.4);
+			ctx.fillText("2", (xaxis+yradius/1.3), height/2-yradius/2.5);
+			ctx.fillText("5", (xaxis+yradius/2.3), height/2+yradius/1.26);
+			ctx.fillText("4", (xaxis+yradius/1.3), height/2+yradius/2.1);
+			ctx.fillText("7", (xaxis-yradius/2.2), height/2+yradius/1.26);
+			ctx.fillText("8", (xaxis-yradius/1.3), height/2+yradius/2.1);
+			ctx.fillText("11", (xaxis-yradius/2.3), height/2-yradius/1.4);
+			ctx.fillText("10", (xaxis-yradius/1.3), height/2-yradius/2.5);
+
+
+			ctx.font = "25px Consolas";//(5) "20px Consolas"
+			if(id==-5 || id==5) {ctx.font = "20px Consolas";}
+
+			if(id==1 && analog==true) {ctx.fillText(currentTimezone, (width/2), height/2+radius/0.7);}
+			else if(id==-3 && analog==true){
+			for(let i=0;i<timeZone.length;i++){
+				if(timeZone[i]==currentTimezone)
+				{
+					if(i==0) ctx.fillText(timeZone[timeZone.length-1], (width/2-width/4.363636), height/2+radius/0.9);
+					else ctx.fillText(timeZone[i-1], (width/2-width/4.363636), height/2+radius/0.9);
+					break;
+				}
+			}}
+			else if(id==3 && analog==true){
+			for(let i=0;i<timeZone.length;i++){
+				if(timeZone[i]==currentTimezone)
+				{
+					if(i==timeZone.length-1) ctx.fillText(timeZone[0], (width/2+width/4.3636), height/2+radius/0.9);
+					else ctx.fillText(timeZone[i+1], (width/2+width/4.3636), height/2+radius/0.9);
+					break;
+				}
+			}}
+
+			else if(id==-5 && analog==true){
+			for(let i=0;i<timeZone.length;i++){
+				if(timeZone[i]==currentTimezone)
+				{
+					if(i==0) ctx.fillText(timeZone[timeZone.length-2], (width/12), height/2+radius/1.1);
+					else ctx.fillText(timeZone[i-2], (width/12), height/2+radius/1.1);
+					break;
+				}
+			}}
+			else if(id==5 && analog==true){
+			for(let i=0;i<timeZone.length;i++){
+				if(timeZone[i]==currentTimezone)
+				{
+					if(i==timeZone.length-1) ctx.fillText(timeZone[1], (width-width/12), height/2+radius/1.1);
+					else ctx.fillText(timeZone[i+2], (width-width/12), height/2+radius/1.1);
+					break;
+				}
+			}}
+
+			hours=hours+minutes/60;
+			minutes=minutes+seconds/60;
+			if(hours>12) {hours=hours-12;}
+
+			hours=hours*5;
+
+		    //----------------seconds--------------------
+		    if(seconds>0 && seconds < 15) angleSec=-6*seconds;
+		    else if(seconds > 15 && seconds < 30) angleSec=6*seconds-180;
+		    else if(seconds > 30 && seconds < 45) angleSec=-6*seconds+180;
+		    else if(seconds > 45 && seconds < 60) angleSec=6*seconds;
+
+		    secA=Math.sin((180-(90+angleSec))*2*Math.PI/360)*(yradius*4.5/6);//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    secB=Math.cos((180-(90+angleSec))*2*Math.PI/360)*(yradius*4.5/6);//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+
+		    if(seconds==0) {secA=(yradius*4.5/6); secB=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(seconds==15) {secB=-(yradius*4.5/6); secA=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(seconds==30) {secA=-(yradius*4.5/6); secB=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(seconds==45) {secB=(yradius*4.5/6); secA=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(seconds > 15 && seconds < 30) {secA=0-secA;}
+		    else if(seconds > 30 && seconds < 45) {secA=0-secA;secB=0-secB;}
+		    else if(seconds > 45 && seconds < 60) {secB=0-secB;}
+
+		    //--------------minutes--------------------
+		    if(minutes>0 && minutes < 15) angleMin=-6*minutes;
+		    else if(minutes > 15 && minutes < 30) angleMin=6*minutes-180;
+		    else if(minutes > 30 && minutes < 45) angleMin=-6*minutes+180;
+		    else if(minutes > 45 && minutes < 60) angleMin=6*minutes;
+
+		    minA=Math.sin((180-(90+angleMin))*2*Math.PI/360)*(yradius*7.5/12);//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    minB=Math.cos((180-(90+angleMin))*2*Math.PI/360)*(yradius*7.5/12);//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+
+		    if(minutes==0) {minA=(yradius*7.5/12); minB=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(minutes==15) {minB=-(yradius*7.5/12); minA=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(minutes==30) {minA=-(yradius*7.5/12); minB=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(minutes==45) {minB=(yradius*7.5/12); minA=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(minutes > 15 && minutes < 30) {minA=0-minA;}
+		    else if(minutes > 30 && minutes < 45) {minA=0-minA;minB=0-minB;}
+		    else if(minutes > 45 && minutes < 60) {minB=0-minB;}
+
+		    //----------------hours-----------------------
+		    if(hours>0 && hours < 15) angleHour=-6*hours;
+		    else if(hours > 15 && hours < 30) angleHour=6*hours-180;
+		    else if(hours > 30 && hours < 45) angleHour=-6*hours+180;
+		    else if(hours > 45 && hours < 60) angleHour=6*hours;
+
+		    hourA=Math.sin((180-(90+angleHour))*2*Math.PI/360)*(yradius*3/7);//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    hourB=Math.cos((180-(90+angleHour))*2*Math.PI/360)*(yradius*3/7);//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+
+		    if(hours==0) {hourA=(yradius*3/7); hourB=0;}
+		    else if(hours==15) {hourB=-(yradius*3/7); hourA=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(hours==30) {hourA=-(yradius*3/7); hourB=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(hours==45) {hourB=(yradius*3/7); hourA=0;}//x--> radius (1), radius/1.25 (3), radius/1.7 (5)
+		    else if(hours > 15 && hours < 30) {hourA=0-hourA;}
+		    else if(hours > 30 && hours < 45) {hourA=0-hourA;hourB=0-hourB;}
+		    else if(hours > 45 && hours < 60) {hourB=0-hourB;}
+		    //----------------------------------------------------------------
+		    
+
+		    ctx.beginPath();
+		    ctx.moveTo(xaxis, height/2);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) 
+		    ctx.lineTo(xaxis-secB, height/2-secA);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) 
+		    ctx.lineWidth = 2;
+			ctx.strokeStyle=clockColor;
+		    ctx.stroke();
+
+		    ctx.beginPath();
+		    ctx.moveTo(xaxis, height/2);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) 
+		    ctx.lineTo(xaxis-minB, height/2-minA);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) 
+		    ctx.lineWidth = 3;
+			ctx.strokeStyle=clockColor;
+		    ctx.stroke();
+
+		    ctx.beginPath();
+		    ctx.moveTo(xaxis, height/2);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) 
+		    ctx.lineTo(xaxis-hourB, height/2-hourA);//x -> width/2 (1), width/2 +/- width/4.363636 (3), width/12 && width-width/12 (5) 
+		    ctx.lineWidth = 4;
+			ctx.strokeStyle=clockColor;
+			ctx.stroke();
+		}
+
+		updateTime();
+
+		function oneTimeUpdate(){
+			if(clockStyle==0){
+				drawClock(1,width/2,radius,true);
+			}
+			else if(clockStyle==1){
+				drawClock(1,width/2,radius,true);
+				drawClock(-3,width/2-width/4.363636,radius/1.25,true);
+				drawClock(3,width/2+width/4.363636,radius/1.25,true);
+			}
+			else if(clockStyle==2){
+				drawClock(1,width/2,radius,true);
+				drawClock(-3,width/2-width/4.363636,radius/1.25,true);
+				drawClock(3,width/2+width/4.363636,radius/1.25,true);
+				drawClock(-5,width/12,radius/1.7,true);
+				drawClock(5,width-width/12,radius/1.7,true);
+			}
+			else if(clockStyle==3){
+				onlyDigital();
+			}
+			else if(clockStyle==4){
+				drawClock(1,width/2,radius,false);
+			}
+		}
+
+		function updateTime(){
+			oneTimeUpdate();
+
+			setTimeout(updateTime,1000);
+		}
+    </script>
+</body>
+</html>
