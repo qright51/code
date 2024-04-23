@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+</head>
+<body>
+    <h1 style="font-size: 50px;text-align: center;margin-bottom:40px;font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">ROCK PAPER SCISSORS</h1>
+    <div>
+        <img id="leftSide" style="float: left;padding:10px;margin-left:360px;width:20%;-webkit-transform: scaleX(-1);transform: scaleX(-1);">
+    </div>
+    <div>
+        <img id="rightSide" style="float: right;padding:10px;margin-right:360px;width:20%;">
+    </div>
+    <div>
+        <button id="start" type="button" style="font-size:30px;text-align: center;margin:auto;width:20%;">Start</button>
+        <button id="Restart" type="button" style="font-size:30px;text-align: center;margin:auto;width:20%;">Reset</button>
+    </div>
+    <div>
+        <p id="leftSideScore" style="float: left;padding:10px;margin-left:500px;width:20%;font-family:Verdana, Geneva, Tahoma, sans-serif;">SCORE: 0</p>
+    </div>
+    <div>
+        <p id="rightSideScore" style="float: right;padding:10px;margin-right:210px;width:20%;font-family:Verdana, Geneva, Tahoma, sans-serif;">SCORE: 0</p>
+    </div>
+    <script>
+        let leftSide = document.getElementById("leftSide");
+        let rightSide = document.getElementById("rightSide");
+        let leftSideScore = document.getElementById("leftSideScore");
+        let rightSideScore = document.getElementById("rightSideScore");
+        let start = document.getElementById("start");
+        let restart = document.getElementById("Restart");
+
+        let tool = ["scissors.png","paper.png","rock.png"];
+        let switchSomeTimes=0;
+        let LeftSide="";
+        let RightSide="";
+        const timesSwitching=5;
+
+        let scoreLeft=0;
+        let scoreRight=0;
+
+        LeftSide=tool[Math.floor(Math.random()*3)];
+        RightSide=tool[Math.floor(Math.random()*3)];
+        leftSide.src=LeftSide;
+        rightSide.src=RightSide;
+
+        start.addEventListener("click",()=>{switchSomeTimes=0;switchTimes();});
+
+        restart.addEventListener("click",()=>{
+            switchSomeTimes=0;
+            scoreLeft=0;
+            scoreRight=0;
+            LeftSide=tool[Math.floor(Math.random()*3)];
+            RightSide=tool[Math.floor(Math.random()*3)];
+            leftSide.src=LeftSide;
+            rightSide.src=RightSide;
+            leftSideScore.innerHTML="SCORE: "+scoreLeft;
+            rightSideScore.innerHTML="SCORE: "+scoreRight;});
+
+        function compareHands(left,right){
+            if(left=="scissors.png"){if(right=="paper.png"){scoreLeft++;}else if(right=="rock.png"){scoreRight++;}}
+            else if(left=="paper.png"){if(right=="scissors.png"){scoreRight++;}else if(right=="rock.png"){scoreLeft++;}}
+            else if(left=="rock.png"){if(right=="paper.png"){scoreRight++;}else if(right=="scissors.png"){scoreLeft++;}}
+            leftSideScore.innerHTML="SCORE: "+scoreLeft;
+            rightSideScore.innerHTML="SCORE: "+scoreRight;}
+
+        function switchTimes(){
+            if(switchSomeTimes<timesSwitching){
+                LeftSide=tool[Math.floor(Math.random()*3)];
+                RightSide=tool[Math.floor(Math.random()*3)];
+                leftSide.src=LeftSide;
+                rightSide.src=RightSide;
+                switchSomeTimes++;
+                setTimeout(switchTimes,210);}
+            else{compareHands(LeftSide,RightSide);}}
+    </script>
+</body>
+</html>

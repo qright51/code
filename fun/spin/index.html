@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+</head>
+<body>
+    <style>
+        html{
+            height: 100%;
+            margin:0px;
+            padding:0px;
+            display:block;
+        }
+        body{
+            min-height: 100%;
+            margin:0px;
+        }
+        div{
+            position: absolute;
+        }
+
+        input{
+            color: white;
+            z-index: 1;
+            background: red;
+        }
+        canvas{
+            z-index: 0;
+        }
+        h3{
+            color: white;
+            z-index: 1;
+        }
+    </style>
+
+    <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="0" id="range" width="100px">
+        <h3 id="output">0°</h3>
+    </div>
+
+    <canvas id="board" width="800" height="600">
+        
+    <script src="script.js"></script>
+</body>
+</html>

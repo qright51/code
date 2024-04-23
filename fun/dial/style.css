@@ -1,0 +1,66 @@
+*{
+    box-sizing: content-box;
+    margin: 0;
+}
+
+.container{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.wheel{
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    background: rgb(255,255,255);
+background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(231,231,231,1) 100%);
+
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    box-shadow: 0 0px 10px 5px lightgray;
+    display: flex;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+.point{
+    width: 170px;
+    height: 100px;
+    border: solid 5px #000;
+    border-color: red transparent transparent transparent;
+    border-radius: 100px/100px 100px 0 0;
+    transform: translateY(10px);
+}
+
+.ratio{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    z-index: 1
+}
+
+.ratio-text{
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    cursor: pointer;
+    user-select: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

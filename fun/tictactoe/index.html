@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+
+        tr, td{
+            border: 3px solid black;
+            user-select: none;
+        }
+
+        td{
+            box-sizing: content-box;
+            width: 200px;
+            height: 200px;
+            text-align: center;
+            font-size: 40px;
+            font-family: sans-serif;
+        }
+    </style>
+    <table>
+        <tr>
+            <td id="0"></td>
+            <td id="1"></td>
+            <td id="2"></td>
+        </tr>
+        <tr>
+            <td id="3"></td>
+            <td id="4"></td>
+            <td id="5"></td>
+        </tr>
+        <tr>
+            <td id="6"></td>
+            <td id="7"></td>
+            <td id="8"></td>
+        </tr>
+    </table>
+    <script>
+        let id0 = document.getElementById("0");
+        let id1 = document.getElementById("1");
+        let id2 = document.getElementById("2");
+        let id3 = document.getElementById("3");
+        let id4 = document.getElementById("4");
+        let id5 = document.getElementById("5");
+        let id6 = document.getElementById("6");
+        let id7 = document.getElementById("7");
+        let id8 = document.getElementById("8");
+
+
+        let turn = false; // false - X || true - O
+        let ended = false;
+
+        let array = new Array(3);
+        array[0] = new Array(3);
+        array[1] = new Array(3);
+        array[2] = new Array(3);
+
+
+        id0.addEventListener("click",()=>processClick(id0));
+        id1.addEventListener("click",()=>processClick(id1));
+        id2.addEventListener("click",()=>processClick(id2));
+        id3.addEventListener("click",()=>processClick(id3));
+        id4.addEventListener("click",()=>processClick(id4));
+        id5.addEventListener("click",()=>processClick(id5));
+        id6.addEventListener("click",()=>processClick(id6));
+        id7.addEventListener("click",()=>processClick(id7));
+        id8.addEventListener("click",()=>processClick(id8));
+
+        function processClick(id){
+            if(!ended){
+                if(id.id>=0 && id.id<=2){//1st row
+                    if(array[0][id.id]==undefined){
+                        if(turn) {id.innerText="O";array[0][id.id]="O";}
+                        else {id.innerText="X";array[0][id.id]="X";}
+                        turn=!turn;
+                        check();
+                    }
+                }
+                else if(id.id>=3 && id.id<=5){//2nd row
+                    if(array[1][id.id-3]==undefined){
+                        if(turn) {id.innerText="O";array[1][id.id-3]="O";}
+                        else {id.innerText="X";array[1][id.id-3]="X";}
+                        turn=!turn;
+                        check();
+                    }
+                }
+                else if(id.id>=6 && id.id<=8){//3rd row
+                    if(array[2][id.id-6]==undefined){
+                        if(turn) {id.innerText="O";array[2][id.id-6]="O";}
+                        else {id.innerText="X";array[2][id.id-6]="X";}
+                        turn=!turn;
+                        check();
+                    }
+                }
+            }
+        }
+
+        function check(){
+            if((array[0][0]==array[0][1]) && (array[0][1]==array[0][2]) && (array[0][0]!=undefined) && (array[0][1]!=undefined) && (array[0][2]!=undefined)){ id0.innerHTML="<b>"+id0.innerText+"</b>"; id1.innerHTML="<b>"+id1.innerText+"</b>"; id2.innerHTML="<b>"+id2.innerText+"</b>"; end(); }
+            if((array[1][0]==array[1][1]) && (array[1][1]==array[1][2]) && (array[1][0]!=undefined) && (array[1][1]!=undefined) && (array[1][2]!=undefined)){ id3.innerHTML="<b>"+id3.innerText+"</b>"; id4.innerHTML="<b>"+id4.innerText+"</b>"; id5.innerHTML="<b>"+id5.innerText+"</b>"; end(); }
+            if((array[2][0]==array[2][1]) && (array[2][1]==array[2][2]) && (array[2][0]!=undefined) && (array[2][1]!=undefined) && (array[2][2]!=undefined)){ id6.innerHTML="<b>"+id6.innerText+"</b>"; id7.innerHTML="<b>"+id7.innerText+"</b>"; id8.innerHTML="<b>"+id8.innerText+"</b>"; end(); }
+            if((array[0][0]==array[1][0]) && (array[1][0]==array[2][0]) && (array[0][0]!=undefined) && (array[1][0]!=undefined) && (array[2][0]!=undefined)){ id0.innerHTML="<b>"+id0.innerText+"</b>"; id3.innerHTML="<b>"+id3.innerText+"</b>"; id6.innerHTML="<b>"+id6.innerText+"</b>"; end(); }
+            if((array[0][1]==array[1][1]) && (array[1][1]==array[2][1]) && (array[0][1]!=undefined) && (array[1][1]!=undefined) && (array[2][1]!=undefined)){ id1.innerHTML="<b>"+id1.innerText+"</b>"; id4.innerHTML="<b>"+id4.innerText+"</b>"; id7.innerHTML="<b>"+id7.innerText+"</b>"; end(); }
+            if((array[0][2]==array[1][2]) && (array[1][2]==array[2][2]) && (array[0][2]!=undefined) && (array[1][2]!=undefined) && (array[2][2]!=undefined)){ id2.innerHTML="<b>"+id2.innerText+"</b>"; id5.innerHTML="<b>"+id5.innerText+"</b>"; id8.innerHTML="<b>"+id8.innerText+"</b>"; end(); }
+            if((array[0][0]==array[1][1]) && (array[1][1]==array[2][2]) && (array[0][0]!=undefined) && (array[1][1]!=undefined) && (array[2][2]!=undefined)){ id0.innerHTML="<b>"+id0.innerText+"</b>"; id4.innerHTML="<b>"+id4.innerText+"</b>"; id8.innerHTML="<b>"+id8.innerText+"</b>"; end(); }
+            if((array[0][2]==array[1][1]) && (array[1][1]==array[2][0]) && (array[0][2]!=undefined) && (array[1][1]!=undefined) && (array[2][0]!=undefined)){ id2.innerHTML="<b>"+id2.innerText+"</b>"; id4.innerHTML="<b>"+id4.innerText+"</b>"; id6.innerHTML="<b>"+id6.innerText+"</b>"; end(); }
+            let counter=0;
+            for(let i=0; i<3; i++){ for(let j=0; j<3; j++){ if(array[i][j]==undefined){ counter++; } } }
+            if(counter==0) stopGame();
+        }
+
+        function end(){
+            if(turn) console.log("Winner is X!");
+            else console.log("Winner is O!");
+            ended=true;
+        }
+
+        function stopGame(){
+            console.log("Tie");
+            ended=true;
+        }
+
+    </script>
+</body>
+</html>
