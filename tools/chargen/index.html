@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate random characters</title>
+</head>
+<body>
+    <div>
+        <label for="nums">Number of characters</label>
+        <input type="number" name="nums" id="nums">
+        <select name="chars" id="chars">
+            <option value="hex">Hex</option>
+            <option value="alpha_low">Alphabetical (lowercase)</option>
+            <option value="alpha_up">Alphabetical (uppercase)</option>
+            <option value="alphanumeric">Alphanumeric</option>
+        </select>
+        <input type="button" value="Generate" id="generate">
+    </div>
+    <div id="output"></div>
+    <script src="script.js"></script>
+</body>
+</html>
