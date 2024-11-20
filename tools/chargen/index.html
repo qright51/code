@@ -6,18 +6,19 @@
     <title>Generate random characters</title>
 </head>
 <body>
-    <div>
+    <form id="form">
         <label for="nums">Number of characters</label>
-        <input type="number" name="nums" id="nums">
+        <input type="number" name="nums" id="nums" autofocus>
         <select name="chars" id="chars">
             <option value="hex">Hex</option>
             <option value="alpha_low">Alphabetical (lowercase)</option>
             <option value="alpha_up">Alphabetical (uppercase)</option>
             <option value="alphanumeric">Alphanumeric</option>
+            <option value="numeric">Numeric</option>
         </select>
-        <input type="button" value="Generate" id="generate">
+        <input type="submit" value="Generate">
     </div>
-    <div id="output"></div>
+    <div style="overflow-wrap: break-word;" id="output"></div>
     <script src="script.js"></script>
 </body>
 </html>

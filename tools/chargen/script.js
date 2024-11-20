@@ -1,30 +1,38 @@
-let btn = document.getElementById("generate");
+let form = document.getElementById("form");
 
 let alpha = "abcdefghijklmnopqrstuvwxyz";
 let numeric = "0123456789";
 
 
-btn.addEventListener("click",()=>{
+form.addEventListener("submit",(e)=>{
+    e.preventDefault();
     let d = document.getElementById("nums").value;
+    if(d==0) return;
 
     let s = "";
+    let n;
     for(let i=0; i<d; i++){
         switch(document.getElementById("chars").value){
             case "hex":
-                let k=Math.floor(Math.random()*16);
-                s+= k<=9?numeric.charAt(k):alpha.charAt(k-10);
+                n=Math.floor(Math.random()*16);
+                s+= n<=9?numeric.charAt(n):alpha.charAt(n-10);
                 break;
             case "alpha_low":
-                let j=Math.floor(Math.random()*26);
-                s+= alpha.charAt(j);
+                n=Math.floor(Math.random()*26);
+                s+= alpha.charAt(n);
                 break;
             case "alpha_up":    
-                let l=Math.floor(Math.random()*52);
-                s+= l<=25?alpha.charAt(25-l):alpha.toUpperCase().charAt(51-l);
+                n=Math.floor(Math.random()*52);
+                s+= n<=25?alpha.charAt(25-n):alpha.toUpperCase().charAt(51-n);
                 break;
             case "alphanumeric":
-                let m=Math.floor(Math.random()*(2*alpha.length+numeric.length));
-                s+= (alpha+alpha.toUpperCase()+numeric).charAt(m);
+                n=Math.floor(Math.random()*(2*alpha.length+numeric.length));
+                s+= (alpha+alpha.toUpperCase()+numeric).charAt(n);
+                break;
+            case "numeric":
+                n=Math.floor(Math.random()*numeric.length);
+                s+= numeric.charAt(n);
+                break;
         }
         document.getElementById("output").innerHTML=s;
     }
