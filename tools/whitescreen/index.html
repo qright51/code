@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whitescreen</title>
+    <style>
+
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body{
+            background-color: white;
+            cursor: default;
+            min-height: 100vh;
+        }
+
+        body::backdrop{
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let isFullscreen = false;
+        document.body.focus();
+        document.body.addEventListener("click",()=>toggleFullscreen());
+        document.body.addEventListener("keypress",(e)=>{
+            switch(e.key){
+                case "w":
+                    document.body.style.backgroundColor = "white";
+                    break;
+                case "r":
+                    document.body.style.backgroundColor = "red";
+                    break;
+                case "g":
+                    document.body.style.backgroundColor = "green";
+                    break;
+                case "b":
+                    document.body.style.backgroundColor = "blue";
+                    break;
+                case "k":
+                    document.body.style.backgroundColor = "black";
+                    break;
+                case "f":
+                    toggleFullscreen();
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        function toggleFullscreen(){
+            if(isFullscreen){
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { /* IE11 */
+                    document.msExitFullscreen();
+                }
+                document.body.style.cursor="default";
+            }
+            else{
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { /* IE11 */
+                    document.documentElement.msRequestFullscreen();
+                }
+                document.body.style.cursor="none";
+            }
+            isFullscreen = !isFullscreen;
+        }
+    </script>
+</body>
+</html>
