@@ -23,7 +23,16 @@
         }
 
         body{
+            display: flex;
             background-color: black;
+            flex-direction: column;
+            min-height: 100vh;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
+        hr{
+            visibility: hidden;
         }
     </style>
 </head>
@@ -40,11 +49,16 @@
         <li><a href="tools/perlin/index.html">Perlin noise generator</a></li>
         <li><a href="tools/screen/index.html">Screen information</a></li>
         <br>
-        <li><a href="tools/whitescreen/index.html">Whitescreen</a></li>
+        <li><a href="tools/whitescreen/index.html">Full color screen</a></li>
     </ul>
     <hr>
     <h4>Fun</h4>
     <ul>
+        <li><a href="fun/Hex/index.html">Hex</a></li>
+        <li><a href="fun/RayCasting/index.html">Ray casting polygon</a></li>
+        <li><a href="fun/Battleship/index.html">Battleship sim</a></li>
+        <li><a href="fun/Distance/index.html">Distance blobs</a></li>
+        <li><a href="fun/Pong/index.html">Pong</a></li>
         <li><a href="fun/minesweeper/index.html">Minesweeper</a></li>
         <li><a href="fun/life/index.html">Game of Life</a></li>
         <li><a href="fun/clock/index.html">Clock</a></li>
@@ -61,6 +75,8 @@
         <li><a href="fun/spin/index.html">Spin</a></li>
         <li><a href="fun/isometric/index.html">Isometric projection</a></li>
     </ul>
-    <p style="bottom: 0; position: absolute;">&copy; 2025 All rights reserved - <a href="https://qright.dev">qright.dev</a></p>
+    <div style="flex: 1; display: flex; flex-direction: column; justify-content: end;">
+        <p>&copy; 2025 All rights reserved - <a href="https://qright.dev">qright.dev</a></p>
+    </div>
 </body>
 </html>

@@ -12,20 +12,79 @@
             margin: 0;
         }
 
-        html, body{
-            background-color: black;
+        body{
+            display: flex;
+            background-color: white;
             cursor: default;
             min-height: 100vh;
+            min-width: 100vw;
+            overflow: hidden;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container{
+            width: 33%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+
+        .btns{
+            cursor: pointer;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            padding: 1rem;
+            background-color: transparent;
+            color: black;
+            border: 1px solid black;
+        }
+
+        #white{
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        #red{
+            background-color: rgba(255, 0, 0, 1);
+        }
+
+        #green{
+            background-color: rgba(0, 255, 0, 1);
+        }
+
+        #blue{
+            background-color: rgba(0, 0, 255, 1);
+            color: white;
+            border-color: white;
+        }
+
+        #black{
+            background-color: rgba(0, 0, 0, 1);
+            color: white;
+            border-color: white;
         }
     </style>
 </head>
 <body>
+
+    <div class="container">
+        <button class="btns" id="white">white</button>
+        <button class="btns" id="red">red</button>
+        <button class="btns" id="green">green</button>
+        <button class="btns" id="blue">blue</button>
+        <button class="btns" id="black">black</button>
+    </div>
+
     <script>
         let isFullscreen = false;
         document.body.focus();
         document.body.addEventListener("click",()=>toggleFullscreen());
         document.body.addEventListener("keypress",(e)=>{
-            switch(e.key){
+            action(e.key);
+        });
+
+        function action(key){
+            switch(key){
                 case "w":
                     document.body.style.backgroundColor = "white";
                     break;
@@ -47,7 +106,13 @@
                 default:
                     break;
             }
-        });
+        }
+
+        document.getElementById("white").addEventListener("click", () => action("w"));
+        document.getElementById("red").addEventListener("click", () => action("r"));
+        document.getElementById("green").addEventListener("click", () => action("g"));
+        document.getElementById("blue").addEventListener("click", () => action("b"));
+        document.getElementById("black").addEventListener("click", () => action("k"));
 
         function toggleFullscreen(){
             if(isFullscreen){
@@ -59,6 +124,8 @@
                     document.msExitFullscreen();
                 }
                 document.body.style.cursor="default";
+
+                document.querySelectorAll(".btns").forEach(el => el.style.display="block");
             }
             else{
                 if (document.documentElement.requestFullscreen) {
@@ -69,6 +136,8 @@
                     document.documentElement.msRequestFullscreen();
                 }
                 document.body.style.cursor="none";
+
+                document.querySelectorAll(".btns").forEach(el => el.style.display="none");
             }
             isFullscreen = !isFullscreen;
         }
